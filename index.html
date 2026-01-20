@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>潘哒哒书法课 - 全集完结版</title>
+    
+    <style>
+        /* ================= 视觉系统 (v7.5) ================= */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background-color: #F5F1E8; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; height: 100vh; overflow: hidden; color: #3E2723; }
+
+        .app-screen { 
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; 
+            display: none; 
+            flex-direction: column !important; 
+        }
+        
+        .panda-icon { width: 60px; height: 60px; object-fit: contain; }
+        .panda-lg { width: 140px; height: 140px; object-fit: contain; }
+
+        @keyframes breathe {
+            0% { transform: scale(1); color: #333; }
+            50% { transform: scale(1.08); color: #d35400; }
+            100% { transform: scale(1); color: #333; }
+        }
+        .breathe { 
+            animation: breathe 3s infinite ease-in-out; 
+            position: relative; z-index: 10;
+        }
+
+        @keyframes paw-move {
+            0%, 100% { transform: translateY(0) rotate(10deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        #teaching-paw {
+            display: none;
+            position: absolute;
+            bottom: -20px; right: -20px;
+            width: 60px;
+            z-index: 20;
+            pointer-events: none;
+            animation: paw-move 1.5s infinite ease-in-out;
+        }
+
+        @keyframes breathe-panda {
+            0% { transform: scale(0.95); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.9; }
+        }
+        .thinking-anim { animation: breathe-panda 1.5s infinite ease-in-out; }
+
+        .cheer-panda {
+            position: absolute; right: -5px; top: -55px;
+            width: 90px; transform: rotate(10deg);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* 步骤一：坐姿引导 */
+        .posture-text-top {
+            position: absolute; top: 13%; 
+            left: 0; width: 100%; 
+            text-align: center;
+            color: #FFD700; font-size: 20px; font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); z-index: 60; letter-spacing: 1px;
+        }
+        .posture-guide {
+            position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+            width: 260px; height: 350px; border: 4px dashed #FF9800;
+            border-radius: 150px 150px 0 0; box-shadow: 0 0 0 1000px rgba(0,0,0,0.6); z-index: 50;
+        }
+        
+        .posture-tips-box {
+            position: absolute; 
+            bottom: 100px;
+            left: 50%; transform: translateX(-50%);
+            width: 85%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px; padding: 15px; 
+            border: 2px solid #FFCC80;
+            z-index: 60;
+            font-size: 15px; color: #5D4037; font-weight: bold; line-height: 1.6;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .posture-panda-icon {
+            position: absolute;
+            top: -45px;
+            left: -10px; 
+            width: 70px;
+            transform: rotate(-10deg);
+        }
+
+        /* 步骤二：练习 */
+        .study-container { 
+            width: 100%; flex: 1; 
+            display: flex; flex-direction: column; align-items: center; 
+            background: #FFF8E1; padding-top: 60px; overflow-y: auto;
+            padding-bottom: 120px; 
+        }
+        .lesson-panda { position: absolute; top: -45px; right: 10px; width: 70px; transform: rotate(10deg); }
+        .prep-tips { 
+            width: 90%; margin-top: 25px; background: rgba(255, 255, 255, 0.6); 
+            border-radius: 10px; padding: 12px; font-size: 13px; color: #5D4037; 
+            line-height: 1.6; border: 1px solid #EFEBE9; position: relative; 
+        }
+
+        .hint-card { 
+            background: #FFF3E0; 
+            padding: 12px 20px; 
+            border-radius: 12px; margin-top: 10px; 
+            color: #E65100; font-size: 15px;
+            text-align: center; 
+            width: 90%; 
+            border: 1px dashed #FFB74D; 
+            display: flex; flex-direction: column; justify-content: center; 
+        }
+
+        /* 步骤三：魔镜 */
+        .scan-hint-box {
+            position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px; 
+            border-radius: 30px; 
+            z-index: 60; 
+            width: 80%;
+            overflow: visible;
+        }
+        .scan-hint-text { 
+            color: white; font-size: 15px; font-weight: bold; 
+            text-align: center; width: 100%;
+        }
+        .scan-panda-icon {
+            position: absolute;
+            right: -10px; top: -35px;
+            width: 60px;
+            transform: rotate(15deg);
+        }
+
+        .scan-overlay-box {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px; height: 150px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
+            z-index: 50;
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        #ghost-char {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0.6; color: red; 
+            font-size: 85px; 
+            font-family: 'KaiTi';
+        }
+
+        /* 步骤四：校准 */
+        .adjust-box { width: 200px; height: 200px; border: 2px solid #FFD700; overflow: hidden; background: #fff; margin-bottom: 20px; position: relative; }
+        #adjust-img { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; object-fit: cover; transform: translate(-50%, -50%); opacity: 0.7; }
+        .adjust-overlay { position: absolute; width: 100%; height: 100%; pointer-events: none; display: flex; justify-content: center; align-items: center; top: 0; left: 0; }
+        .adjust-text { font-family: 'KaiTi'; font-size: 120px; color: #e74c3c; opacity: 0.6; transform-origin: center center; }
+        
+        .controls { width: 90%; color: white; display: flex; flex-direction: column; gap: 15px; position: relative; }
+        .range-wrap { display: flex; align-items: center; justify-content: space-between; font-size: 16px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; }
+        input[type=range] { -webkit-appearance: none; width: 65%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 5px; outline: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 35px; height: 35px; border-radius: 50%; background: #FF9500; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.4); border: 3px solid white; }
+        
+        .controls-hint-box {
+            display: flex; justify-content: center; align-items: center;
+            margin-top: 15px; gap: 5px;
+        }
+        .controls-hint-text { 
+            font-size:18px; font-weight:800; color:#FFD700; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9); letter-spacing: 1px;
+        }
+        .controls-panda-icon {
+            width: 45px; height: auto; transform: rotate(-10deg);
+        }
+
+        /* 首页 & 列表 */
+        #home-screen { padding: 20px; overflow-y: auto; }
+        .home-header { margin-bottom: 20px; text-align: center; }
+        .app-title { font-size: 28px; color: #E65100; font-weight: 800; letter-spacing: 2px; }
+        .app-subtitle { font-size: 14px; color: #8D6E63; margin-top: 5px; }
+        .course-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 40px; }
+        .course-card { 
+            background: #fff; border-radius: 16px; padding: 15px 20px; 
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.08); border-left: 6px solid #FF9800; 
+            cursor: pointer; transition: transform 0.1s; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .course-idx { font-size: 32px; font-weight: bold; color: #FFE0B2; margin-right: 15px; font-family: 'Arial'; }
+        .course-info { flex: 1; }
+        .course-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 4px; }
+        .course-desc { font-size: 12px; color: #999; line-height: 1.4; } 
+        .course-arrow { color: #FFCC80; font-size: 20px; }
+
+        /* 选字网格 */
+        .char-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; 
+            padding: 20px; overflow-y: auto; flex: 1;
+        }
+        .char-card { 
+            background: #fff; aspect-ratio: 1; border-radius: 12px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            border: 2px solid #FFE0B2; position: relative; cursor: pointer; 
+        }
+        .char-card-text { font-family: 'KaiTi'; font-size: 42px; color: #333; }
+        .char-card-pinyin { font-size: 12px; color: #888; margin-bottom: -5px; }
+        .mi-grid { position: absolute; width: 80%; height: 80%; border: 1px dashed #FFCC80; pointer-events: none; }
+        .mi-grid::before { content:''; position:absolute; top:50%; width:100%; height:1px; background:#FFCC80; }
+        .mi-grid::after { content:''; position:absolute; left:50%; height:100%; width:1px; background:#FFCC80; }
+
+        /* 练习页田字格 */
+        .video-box { 
+            width: 90%; height: 180px; background: #000; border-radius: 10px; border: 3px solid #FFCC80; 
+            overflow: hidden; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+            position: relative; 
+        }
+        .video-box video { width: 100%; height: 100%; object-fit: contain; }
+        .tian-zi-ge { 
+            width: 160px; height: 160px; border: 3px solid #e74c3c; 
+            background: #fff; position: relative; flex-shrink: 0; 
+        }
+        .line-h { position: absolute; top: 50%; width: 100%; border-top: 1px dashed #e74c3c; }
+        .line-v { position: absolute; left: 50%; height: 100%; border-left: 1px dashed #e74c3c; }
+        .char-display { font-family: 'KaiTi'; font-size: 130px; line-height: 160px; text-align: center; width: 100%; height: 100%; position: absolute; }
+        
+        .nav-bar { display: flex; align-items: center; padding: 15px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 10; width: 100%; flex-shrink: 0; }
+        .nav-back { font-size: 24px; padding: 0 15px 0 5px; color: #555; cursor: pointer; }
+        .nav-title { font-size: 18px; font-weight: bold; flex: 1; text-align: center; padding-right: 40px; }
+        .btn-main { position: absolute; bottom: 30px; background: linear-gradient(to right, #FF9500, #FF5E3A); color: white; padding: 12px 40px; border-radius: 50px; border: none; font-size: 18px; font-weight: bold; box-shadow: 0 5px 15px rgba(255, 94, 58, 0.4); z-index: 50; cursor: pointer; }
+        
+        .final-frame { width: 200px; height: 200px; border: 8px solid #FFB74D; border-radius: 4px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); overflow: hidden; position: relative; margin: 20px 0; background: #fff; }
+        #final-img { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; object-fit: cover; transform: translate(-50%, -50%); }
+        .comment-bubble { background: #fff; padding: 20px; border-radius: 15px; border: 2px solid #FFCC80; width: 90%; position: relative; margin-top: 10px; }
+        .comment-bubble::before { content:''; position:absolute; top:-10px; left:50%; transform:translateX(-50%); border-width:0 10px 10px 10px; border-style:solid; border-color:transparent transparent #FFCC80 transparent; }
+        .stamp { position: absolute; bottom: 20px; right: 20px; width: 100px; height: 100px; border: 3px solid #D32F2F; border-radius: 50%; color: #D32F2F; font-size: 18px; font-weight: bold; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-20deg); opacity: 0; background: rgba(255, 255, 255, 0.8); box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2); }
+        .stamp.show { animation: stampIn 0.5s ease-out forwards; }
+        
+        #ai-loading { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 248, 225, 0.95); z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        #confirm-modal { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-box { background: white; width: 80%; border-radius: 20px; padding: 20px; text-align: center; }
+        .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-cancel { flex:1; padding: 10px; background: #ddd; border-radius: 25px; border:none; font-weight: bold; }
+        .btn-ok { flex:1; padding: 10px; background: #FF9800; color: white; border-radius: 25px; border:none; font-weight: bold; }
+
+        /* 步骤页面通用样式 */
+        .step-section { 
+            display: none; 
+            width: 100%; height: 100%; 
+            flex-direction: column !important;
+            align-items: center; 
+            position: absolute; top:0; left:0; 
+        }
+        .step-section.active { display: flex !important; }
+
+        #step-1, #step-scan, #step-adjust { justify-content: center; }
+        #step-2, #step-report { justify-content: flex-start; }
+    </style>
+</head>
+<body>
+
+    <div id="ai-loading">
+        <img src="images/panda_thinking.png" class="panda-lg thinking-anim">
+        <div class="loading-text" style="margin-top:20px; color:#E65100; font-weight:bold; font-size:18px;">潘哒哒正在想评语...</div>
+        <div style="font-size:12px; color:#999; margin-top:10px;">看看你的笔锋有没有到位~</div>
+    </div>
+
+    <div id="confirm-modal">
+        <div class="modal-box">
+            <h3 style="color:#E65100; margin-top:0;">🐼 潘哒哒问你</h3>
+            <p style="color:#666; font-size:14px;">字在框框正中间吗？<br>能不能看清楚？</p>
+            <div class="modal-btn-row">
+                <button class="btn-cancel" onclick="closeModal()">不清楚，重拍</button>
+                <button class="btn-ok" onclick="confirmAndReport()">看清了，提交！</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="home-screen" class="app-screen" style="display: flex;">
+        <div class="home-header">
+            <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                <div class="app-title">潘哒哒书法课</div>
+                <img src="images/panda_welcome.png" class="panda-icon">
+            </div>
+            <div class="app-subtitle">一年级下册 · 规范书写</div>
+        </div>
+        <div class="course-list" id="course-list"></div>
+    </div>
+
+    <div id="level-screen" class="app-screen">
+        <div class="nav-bar"><div class="nav-back" onclick="navigateTo('home-screen')">❮</div><div class="nav-title" id="level-title">课程详情</div></div>
+        <div class="char-grid" id="char-list"></div>
+    </div>
+
+    <div id="practice-screen" class="app-screen">
+        <div id="step-1" class="step-section active">
+            <div class="nav-bar" style="position:absolute;top:0;background:transparent;box-shadow:none;"><div class="nav-back" style="color:white;background:rgba(0,0,0,0.3);border-radius:50%;width:30px;height:30px;text-align:center;padding:0;" onclick="navigateTo('level-screen')">✕</div></div>
+            <div class="camera-box">
+                <video id="video-front" class="mirror" autoplay playsinline muted></video>
+                <div class="posture-text-top">请将头正对虚框内</div>
+                <div class="posture-guide"></div>
+                <div class="posture-tips-box">
+                    <img src="images/panda_posture.png" class="posture-panda-icon">
+                    <div style="font-weight:bold; color:#E65100; margin-bottom:5px;">📝 潘哒哒好习惯：</div>
+                    <div>手离笔尖一指节<br>眼离纸本一小臂<br>胸离桌边一小拳</div>
+                </div>
+            </div>
+            <button class="btn-main" onclick="startPractice()">✅ 坐好了</button>
+        </div>
+
+        <div id="step-2" class="step-section" style="background:#FFF8E1;">
+            <div class="nav-bar"><div class="nav-back" onclick="navigateTo('level-screen')">❮</div><div class="nav-title">跟着潘哒哒写</div></div>
+            <div class="study-container">
+                <div class="video-box">
+                    <video id="study-video" src="" controls loop playsinline preload="none"></video>
+                    <img id="teaching-paw" src="images/panda_welcome.png">
+                </div>
+                
+                <div class="tian-zi-ge">
+                    <div class="line-h"></div><div class="line-v"></div>
+                    <div class="char-display breathe" id="study-char">?</div>
+                </div>
+                
+                <div class="hint-card">
+                    <div style="font-weight:bold; margin-bottom:5px;">💡 本课重点：</div>
+                    <span id="lesson-rule-hint" style="color:#5D4037;">...</span>
+                </div>
+                
+                <div class="prep-tips">
+                    <img src="images/panda_lesson.png" class="lesson-panda">
+                    <div style="font-weight:bold; margin-bottom:5px; color:#E65100;">📝 练习小贴士：</div>
+                    <div style="margin-bottom:4px;">1. 请在书上<b>“我能自己练”</b>的田字格里练习，方便后续评价。</div>
+                    <div style="margin-bottom:4px;">2. 练习之前先检查自己的<b>双手是否干净</b>，<b>桌面是否整洁</b>，然后再写字。</div>
+                    <div>3. 保持正确<b>握笔姿势</b>：写字时执笔姿势要正确，<b>大拇指不能压食指</b>。</div>
+                </div>
+                <button class="btn-main" onclick="goToScan()">📸 练好了，去拍照</button>
+            </div>
+        </div>
+
+        <div id="step-scan" class="step-section">
+            <div class="nav-bar" style="position:absolute;top:0;width:100%;background:transparent;box-shadow:none;z-index:70;">
+                <div class="nav-back" style="color:white;background:rgba(0,0,0,0.3);border-radius:50%;width:30px;height:30px;text-align:center;padding:0;line-height:30px;" onclick="backToPractice()">❮</div>
+            </div>
+            <div class="camera-box">
+                <video id="video-back" autoplay playsinline muted></video>
+                <div class="scan-overlay-box">
+                    <div style="width:150px;height:150px;display:flex;justify-content:center;align-items:center;opacity:0.6;color:red;font-size:85px;font-family:'KaiTi';" id="ghost-char">?</div>
+                </div>
+                <div class="scan-hint-box">
+                    <div class="scan-hint-text">对准田字格里的字，咔嚓一下！</div>
+                    <img src="images/panda_welcome.png" class="scan-panda-icon">
+                </div>
+            </div>
+            <button class="btn-main" onclick="capture()">📸 咔嚓</button>
+        </div>
+
+        <div id="step-adjust" class="step-section" style="background:#222;">
+            <div class="adjust-box">
+                <img id="adjust-img" src="">
+                <div class="adjust-overlay"><div class="adjust-text" id="adjust-char-overlay">?</div></div>
+            </div>
+            <div class="controls">
+                <div class="controls-hint-box">
+                    <img src="images/panda_posture.png" class="controls-panda-icon">
+                    <div class="controls-hint-text">拖动滑杆，把红字和你的字对齐</div>
+                </div>
+                <div class="range-wrap"><span>🖼️ 图片</span><input type="range" min="0.5" max="2.5" step="0.05" value="1" id="scale-img" oninput="updateAdjust()"></div>
+                <div class="range-wrap"><span>🔠 红字</span><input type="range" min="0.5" max="1.5" step="0.05" value="1" id="scale-text" oninput="updateAdjust()"></div>
+            </div>
+            <button class="btn-main" onclick="checkQualityAndConfirm()" style="bottom:50px;">✨ 提交作品</button>
+        </div>
+
+        <div id="step-report" class="step-section" style="background:#FFF8E1;overflow-y:auto;justify-content:flex-start;">
+            <div class="nav-bar"><div class="nav-back" onclick="navigateTo('level-screen')">❮</div><div class="nav-title">小小书法家</div></div>
+            <div class="final-frame"><img id="final-img" src=""></div>
+            <div class="stamp">
+                <img src="images/panda_avatar.png" style="width:50px; opacity:0.9; margin-bottom:5px;">
+                <div style="font-size:14px; color:#D32F2F; margin-top:-5px;">优秀</div>
+            </div>
+            <div class="comment-bubble">
+                <img src="images/panda_success.png" class="cheer-panda">
+                <div style="text-align:center;font-size:24px;color:#FFD700;margin-bottom:5px;">★★★★☆</div>
+                <div style="font-size:14px;color:#555;line-height:1.6;" id="ai-comment">...</div>
+            </div>
+            <button class="btn-main" style="position:static;margin-top:20px;margin-bottom:40px;" onclick="navigateTo('level-screen')">🏁 完成，练下一个</button>
+        </div>
+    </div>
+
+    <canvas id="cvs" style="display:none;"></canvas>
+    <canvas id="analysis-cvs" style="display:none;" width="100" height="100"></canvas>
+
+    <script>
+        window.onerror = function(msg, url, line) { return false; };
+
+        // ================= 🧠 AI 拟真评语系统 (v7.5 最终版) =================
+        const COMMENT_DB = {
+            openings: {
+                fast: ["下笔如有神！笔势非常果断，", "行云流水一般，我看你没怎么犹豫，", "笔势流畅，甚至能感觉到你的速度感，"],
+                normal: ["这一遍写得很稳！", "能看出你很用心，节奏控制得很好，", "潘哒哒眼前一亮！扫描到了很多细节，", "哇！这个字的间架结构很舒服，"],
+                slow: ["凝神静气，每一笔都写得很扎实，", "沉稳有力，起笔和收笔都照顾到了，", "经过深思熟虑的一笔，虽然慢但很稳，"]
+            },
+            
+            // 结构形态库
+            structure: {
+                // ... (前9课的分类保持不变) ...
+                flat: ["很好地体现了<b>‘横长竖短’</b>的特点。", "整体字形<b>扁方稳重</b>，没有写得太瘦长。", "注意到了外框<b>‘上宽下窄’</b>的透视感，很专业。", "横向舒展，字形看起来非常稳固。"],
+                tall: ["完美抓住了<b>‘横短竖长’</b>的关键特征。", "字形<b>挺拔修长</b>，像个站军姿的小战士。", "竖画写得<b>垂直有力</b>，撑起了整个字的骨架。", "<b>‘竖长且直’</b>，看起来非常有精神。"],
+                leftSmall: ["左边的偏旁写得<b>小巧紧凑</b>，给右边留足了面子。", "<b>左窄右宽</b>的比例控制得很棒，很有层次。", "左边收紧，右边舒展，这就叫<b>‘避让’</b>。", "左边的关键笔画形态较小，没有喧宾夺主。"],
+                semi: ["走之底的折笔写得<b>小而精致</b>，没有把字撑散。", "内部的字坐得很稳，被走之底完美地<b>托住</b>了。", "包围关系处理得很好，结构紧凑而不拥挤。", "平捺舒展大气，底盘非常稳固。"],
+                obliqueHook: ["这一笔<b>横斜钩</b>写得非常舒展，像鸟儿展开的翅膀。", "整体结构虽然向右下倾斜，但<b>重心</b>找得很准。", "核心笔画<b>一笔写成</b>，中间没有断开，线条很有弹性。"],
+                speechRadical: ["言字旁写得<b>窄窄的、小小的</b>，符合‘避让’原则。", "言字旁<b>‘横斜竖直’</b>，提画干脆利落，很有精神。", "左窄右宽，里外配合得非常默契。"],
+                symmetry: ["左右两点的<b>位置很对称</b>，就像天平一样平衡。", "点画的位置安排得非常匀称，重心很稳。", "两个点写得<b>左低右高</b>，相互呼应，很活泼。"],
+                diagonal: ["把这两个点连起来看，刚好是一条漂亮的<b>斜线</b>。", "第一笔点很有分量，稳稳地压在了<b>竖中线</b>上。", "点画的大小变化控制得很好，<b>有大有小</b>，错落有致。"],
+                dotRules: ["点的<b>位置和形态</b>写得很准，起笔重收笔轻。", "注意到了点画的<b>大小变化</b>，非常有层次感。", "这一笔点，起到了画龙点睛的作用，把字提神了。", "点的位置非常考究，<b>遥相呼应</b>，结构紧凑。"],
+                flatPie: ["第一笔撇写得<b>短而平</b>，没有写成横，很专业！", "这个<b>平撇</b>写得很好，平缓而有力度。", "撇画短小精悍，为下面的笔画留出了空间。"],
+                slantPie: ["这个<b>斜撇</b>写得舒展大气，线条流畅。", "撇画<b>斜而长</b>，出锋锐利，很有气势。", "注意到了斜撇的形态，没有写得太弯，很直爽。"],
+                verticalPie: ["这个<b>竖撇</b>写得太标准了！<b>先直后弯</b>，下半段才自然弯出。", "注意到了吗？这一笔<b>不能直接写斜</b>，要先顿笔向下，再向左撇出。", "这一笔写得很有韧劲，像一棵被风吹弯的小树，<b>挺而不僵</b>。"],
+                flatNa: ["这个<b>平捺</b>写得真漂亮！就像一辆<b>小车</b>一样，稳稳地托住了上面的部分。", "注意到了吗？<b>平捺</b>要写出<b>‘一波三折’</b>的感觉，起伏很有节奏。", "笔顺完全正确！你是<b>先写右上部分</b>，再写左下的‘走之’，这就叫<b>先内后外</b>。"],
+
+                // 🔥 Lesson 10 特供：包围结构 (Semi Wrap)
+                semiWrap: [
+                    "<b>先外后内</b>，笔顺完全正确！先把框搭好，再写里面的内容。",
+                    "左上包围的字，外面的框要写得<b>舒展</b>，把里面的字抱住。",
+                    "里面的字写得<b>居中平稳</b>，没有掉出来，结构很紧凑。"
+                ],
+
+                general: ["整个字的<b>重心</b>找得很准。", "笔画之间的<b>呼应关系</b>处理得很妙。", "符合<b>笔顺规则</b>，结构匀称。"]
+            },
+            
+            // 详细点评
+            details: {
+                // ... (前9课内容保持不变) ...
+                "春": ["上面的三笔<b>短横</b>间距均匀，没有粘连。", "下面的‘日’写出了<b>‘竖长且直’</b>的感觉。", "撇捺舒展，像春天的树枝一样伸开了。"],
+                "青": ["上半部分的<b>横画</b>平稳有力，很精神。", "下面的‘月’字第一笔<b>竖撇</b>先直后弯，很标准。", "上下两部分垂直对正，重心很稳。"],
+                "当": ["最上面的<b>短竖</b>写得‘短而直’，立在正中间。", "中间的小短横写得很紧凑，没有松散。", "底部的<b>横折</b>像地基一样稳稳托住了上面。"],
+                "共": ["中间两竖写出了<b>左短右长</b>的变化，非常专业！", "底部的两点撑开得刚刚好，稳固又舒展。", "整体上紧下松，非常有层次感。"],
+                "元": ["这个<b>竖弯钩</b>圆润饱满，钩尖向上有力。", "第二笔长横略微倾斜，让字动感十足。", "上窄下宽，‘二’字头和‘儿’字底配合默契。"],
+                "止": ["第一笔<b>短竖</b>稳稳站在竖中线上，定好了主心骨。", "最后一笔长横平稳舒展，起收有顿挫。", "虽然笔画少，但间架结构撑得很满。"],
+                "他": ["单人旁的<b>撇</b>短而有力，没有影响右边。", "右边的竖弯钩向外延伸，提起了精气神。", "左右避让处理得很好，左窄右宽。"],
+                "回": ["写出了<b>‘横长竖短’</b>的特点，且竖画微微<b>向里斜</b>。", "外框呈倒梯形，上宽下窄，非常稳固。", "内口居中悬空，留白非常均匀。"],
+                "日": ["抓住了<b>‘横短、竖长且直’</b>的特征，很有精神。", "两侧竖画像柱子一样笔直，骨力通达。", "中间短横<b>靠左不靠右</b>，留出了气口。"],
+                "目": ["<b>‘横短、竖长且直’</b>，字形挺拔修长。", "中间两横间距均匀，像梯子一样整齐。", "多而不乱，每一笔都安排得井井有条。"],
+                "自": ["第一笔<b>平撇</b>写得‘短而平’，不抢风头。", "下半部分保持了<b>‘竖长且直’</b>的特点，没有写歪。", "上面的撇给整个字定了很好的中轴线。"],
+                "田": ["写出了<b>‘竖往里斜’</b>的透视感，很有立体感。", "中间‘十’字交汇在<b>田字格正中心</b>，找点很准！", "上下左右空间分割匀称，体现了对称美。"],
+                "四": ["特别表扬！里面的<b>‘竖弯’</b>没有写成钩，观察真仔细。", "字形呈<b>扁方形</b>，外框宽绰不拥挤。", "竖弯转弯处圆润流畅，线条很美。"],
+                "白": ["第一笔<b>撇</b>起笔在竖中线上，定好了重心。", "下面的框依然保持了<b>‘横长折短’</b>的宽扁趋势。", "整体上宽下窄，看起来轻盈又稳当。"],
+                "没": ["第五笔<b>横折弯</b>写得很好，‘折处稍顿，弯处不顿’。", "<b>横折弯</b>形态控制得小巧，给右边留足了空间。", "特别表扬！这个弯是圆转的，而且<b>没有钩</b>！"],
+                "造": ["里面的‘告’字坐得很稳，被下面的<b>平捺</b>完美地<b>托住</b>了。", "先写完‘告’，再写走之底，笔顺规则掌握得很好！", "最后的<b>平捺</b>略向右下平缓行笔，托住了整个字。"],
+                "远": ["<b>平捺</b>向右延伸得很长，像小船一样载着上面的‘元’字。", "右上部分的‘元’写得高高的，给走之底留出了通过的道路。", "竖弯钩没有掉下来，被完美接住了。"],
+                "队": ["左耳旁的<b>横撇弯钩</b>衔接得轻巧自然，一气呵成。", "左边的耳朵旁写得<b>窄窄的</b>，位置偏高，很精神。", "右边的撇捺舒展，和左边的紧凑形成鲜明对比。"],
+                "朵": ["注意！上面的‘几’是<b>横折弯钩</b>，你写出了钩，没搞混！", "转弯的地方圆润流畅，<b>不滞涩</b>，出钩很快。", "上面宽扁，下面稳重，<b>上宽下窄</b>重心很稳。"],
+                "运": ["里面的‘云’字居中偏上，<b>撇折</b>的角度找得很准。", "走之底的<b>横折折撇</b>一笔写成，线条流畅。", "平捺向右延伸得很长，展现了汉字的<b>流动美</b>。"],
+                "飞": ["第一笔<b>横斜钩</b>写得真好，弧度刚刚好。", "横斜钩向<b>右下伸展</b>得很到位，包住了整个字。", "没有写成‘横折弯钩’，转弯处是<b>圆润</b>。"],
+                "气": ["最后一笔<b>横斜钩</b>把上面的部分托住了，非常有力量。", "撇画短小精悍，和下面的长钩形成了<b>长短对比</b>。", "中间的三横排列得紧凑均匀，很有<b>精气神</b>。"],
+                "请": ["言字旁的<b>横折提</b>写得‘横斜竖直’，形态窄小。", "右边的‘青’字<b>横画平行</b>，间距均匀。", "左右结构紧凑，言字旁紧贴着右边。"],
+                "证": ["言字旁的第一笔<b>点</b>，位置准确，起笔稍重。", "右边的‘正’字写得<b>竖直挺拔</b>，支撑起了重心。", "最后一横写得平稳，封住了底，稳如泰山。"],
+                "识": ["言字旁写得<b>高而窄</b>，右边高低错落很有美感。", "‘口’字的<b>封口横</b>没有漏掉，结构完整！", "最后一笔<b>长点</b>写得很有质感，压住了阵脚。"],
+                "认": ["这个<b>斜撇</b>写得好！斜而长，尾巴尖尖，很有气势。", "撇低捺高，捺脚写出了<b>‘一波三折’</b>。", "言字旁没有写太大，把位置让给了右边，比例完美。"], 
+                "让": ["右边的‘上’字<b>竖画挺拔</b>，第一笔竖立得住。", "言字旁的高低位置控制得很好，与右边底部齐平。", "右边的短横没有戳到言字旁，<b>穿插避让</b>做得很好。", "言字旁的点是<b>右点</b>，写在<b>左上方</b>，位置找得很准。"],
+                "尖": ["上面的‘小’字头，<b>左右两点对称</b>，看起来很舒服。", "上小下大，上窄下宽，站得很稳。", "左边的点是<b>左点</b>，略向左下行笔，很有质感。"],
+                "米": ["注意到了第一笔是<b>右点</b>，写在左上方，观察真仔细！", "撇捺像裙子一样散开，支撑有力。", "四面的点画向中心聚拢，<b>‘中宫收紧’</b>很有精神。"],
+                "广": ["第一笔<b>右点</b>写在<b>正上方</b>，不宜过大，像个小帽子。", "横画不宜过长，撇画舒展，<b>广字头</b>写得很大气。", "撇画舒展包围，体现了<b>半包围结构</b>的稳定感。"],
+                "为": ["第一笔点和最后一笔点，<b>遥相呼应</b>，动感十足！", "中间的<b>横折钩</b>气势很足，钩尖指向圆心。", "撇画伸展，穿插在两点之间，结构非常紧凑。"],
+                "外": ["右边的点写得<b>比左边的大</b>，大小变化注意到了，真棒！", "左边撇画收敛，把位置让给了右边，<b>左窄右宽</b>。", "右边的点是<b>右点</b>，向右下行笔，收笔圆润。"],
+                "兴": ["上面的三个点，<b>中间高两边低</b>，很有节奏感。", "下面的长横稳稳托住了上面的点，<b>上紧下松</b>。", "最后一笔变成了<b>长点</b>（反捺），支撑起了整个字。"],
+                "平": ["中间的两个点画，<b>左小右大</b>，很有层次。", "长横写得平稳舒展，真的写得很‘平’！", "竖画垂直有力，压在<b>竖中线</b>上，是整个字的脊梁。"],
+                "沙": ["注意到了吗？<b>第一、二笔点略小，第六笔右点略大</b>，层次分明！", "左边的三点水呈<b>弧形排列</b>，非常生动。", "右边的‘少’字撇画舒展，最后一笔点压住了阵脚。"],
+                "方": ["第一笔也是<b>先写右点</b>，居于正上方，头正身直。", "<b>横折钩</b>略微向内收，重心聚拢在中间，没有散架。", "注意到了<b>‘点’不宜过大</b>，结构很清秀。"],
+                "千": ["第一笔是<b>平撇</b>，写得<b>平而短</b>，尾巴尖尖的，靠上面。", "竖画悬针出锋，写得<b>直而长</b>，支撑有力。", "<b>独体字</b>写得舒展大方，把田字格撑得刚刚好。"],
+                "禾": ["上面的<b>平撇</b>短小精悍，为下面的笔画留出了空间。", "撇捺舒展，像禾苗的叶子一样张开。", "上面的平撇和下面的横画之间留有<b>呼吸感</b>。"],
+                "从": ["左边的‘人’是跟班，捺变成了<b>点</b>；右边的‘人’是主角，斜撇舒展。", "右边的‘人’撇画舒展，捺脚分明。", "一宽一窄，一前一后，这就叫<b>避让</b>。"],
+                "胡": ["右边‘月’字的<b>竖撇稍长</b>，你写出了这种修长的美感。", "左边的‘古’字写得小巧，给右边的‘月’腾出了位置，<b>左右避让</b>做得很好。", "‘月’字中间的短横间距均匀，没有粘连。"],
+                "讲": ["右边‘井’字的<b>竖撇写得挺直</b>，而且短一些，非常干脆利落。", "言字旁提画有力，右边的‘井’字横平竖直，整个字<b>精气神十足</b>。", "这一笔竖撇没有写太长，给下面的竖画留足了面子。"],
+                "开": ["特别表扬！你没有把第三笔写成斜撇，而是标准的<b>竖撇</b>，观察真仔细。", "两横<b>上短下长</b>，底部的竖画悬针出锋，立地顶天。", "整个字写得非常舒展，把田字格撑得很饱满。"],
+                "用": ["第一笔<b>竖撇略有弧度</b>，像一把弯刀，很有弹性。", "外框写得<b>方方正正</b>，‘用’字肚量大，里面内容安排得匀称。", "横折钩的折角清晰有力，竖画垂直。"],
+                "月": ["第一笔是<b>竖撇</b>，<b>先直后弯</b>，收笔出尖，写得非常有质感。", "字形瘦瘦长长的，像一弯新月挂在天空。", "中间两短横<b>靠左不靠右</b>，留出了气口，很透气。"],
+                "皮": ["第二笔是<b>竖撇</b>，第四笔是<b>横撇</b>，两个撇的方向和长短你都分清了，真棒！", "横钩写得轻快，撇捺舒展，像在跳舞一样灵动。", "捺脚写得平稳，把整个字稳稳地托住了。"],
+                "井": ["和‘讲’字一样，这个<b>竖撇要挺直</b>，不能太弯，你做到了。", "两横一撇一竖，间架结构非常匀称，重心很稳。", "最后一笔长竖垂直有力，是整个字的脊梁。"],
+                "之": ["<b>点居中</b>，横画短且向上挑，给下面的捺留出了起笔空间。", "这一笔<b>平捺</b>写出了‘一波三折’的韵味，非常舒展。", "虽然是独体字，但间架结构安排得非常匀称。"],
+                "近": ["里面的‘斤’字写得挺拔，<b>平撇</b>短小，不跟走之底打架。", "走之底的<b>平捺</b>略向右下平缓行笔，收笔出尖，很利落。", "先内后外，笔顺完全正确。"],
+                "还": ["里面的‘不’字重心很稳，没有倒，<b>平捺</b>起到了关键的支撑作用。", "捺脚处横向带笔出尖，像滑滑梯最后那一下，很顺畅。", "走之底没有写得太大，包住了里面的字。"],
+                "过": ["里面的‘寸’字点画位置准确，走之底包裹得刚刚好。", "这一笔<b>平捺</b>写得非常有弹性，托住了整个字的重量。", "横折钩写得有力度，钩尖向上。"],
+
+                // 🔥 Lesson 10 新增 (包围 & 长短)
+                "左": ["写出了<b>‘横短撇长’</b>的特点，撇画伸展得很长。", "<b>最后写‘工’</b>，笔顺完全正确，先写外面的横撇。", "‘工’字稳稳地坐在了撇画的下放，重心很稳。"],
+                "右": ["这一个字变成了<b>‘横长撇短’</b>，长横写得非常有气势！", "下面的<b>‘口’写得略小</b>，和上面的长横形成了鲜明的对比。", "第一笔是撇，第二笔是横，起笔顺序没有搞混，真棒！"],
+                "石": ["和‘左’字一样，这里也是<b>‘横短撇长’</b>，撇画从右上向左下舒展。", "下面的<b>‘口’写得略大</b>，稳稳地托住了上半部分。", "横画起笔稍轻，收笔稍重，很有质感。"],
+                "有": ["很好地体现了<b>‘横长撇短’</b>的特征，长横像屋顶一样盖住了下面。", "特别表扬！<b>第三笔写的是‘竖’</b>，没有写成撇，观察真仔细！", "下面的‘月’字两横匀称，字形瘦长。"],
+                "包": ["符合<b>先外后内</b>的笔顺规则，先写勺子头，再写里面的‘巳’。", "里面的<b>竖弯钩</b>向右舒展，圆润有力，把整个字撑起来了。", "外面的包围框没有写得太小，给里面留足了空间。"],
+                "饱": ["加上了食字旁，右边的‘包’字<b>变窄了</b>，给左边留出了位置。", "左窄右宽，食字旁的撇画和右边的包配合默契，没有打架。", "右边的竖弯钩依然很舒展，把字托住了。"],
+                "抱": ["提手旁昂首挺胸，右边的‘包’字<b>字形收窄</b>，显得很精神。", "提手旁的提画有力，右边的竖弯钩依然保持了舒展，刚柔并济。", "左右两部分紧紧抱在一起，结构很紧凑。"],
+
+                "default": ["笔画清晰，线条有力。", "结构完整，看起来很舒服。", "这一笔一划都写得很到位。", "整体工整，卷面很干净。"]
+            },
+            closings: [
+                "继续保持这个手感！", "真是小小书法家风范！", "我都想把这个字挂在墙上了！", "潘哒哒给你点个赞，下次还要把腰挺直哦！"
+            ]
+        };
+
+        var streamObj = null;
+        var currentActiveChar = null;
+        var currentLessonId = null;
+        var startTime = 0; 
+
+        function navigateTo(pageId) {
+            var v = document.getElementById('study-video');
+            if(v) v.pause();
+            document.querySelectorAll('.app-screen').forEach(function(el){ el.style.display = 'none'; });
+            document.getElementById(pageId).style.display = 'flex';
+        }
+
+        function switchPracticeStep(stepId) {
+            var v = document.getElementById('study-video');
+            if(v) v.pause();
+            var paw = document.getElementById('teaching-paw');
+            if(paw) paw.style.display = 'none';
+            document.querySelectorAll('.step-section').forEach(function(el){ el.classList.remove('active'); });
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        function startPractice() {
+            switchPracticeStep('step-2');
+            var v = document.getElementById('study-video');
+            if(v) { 
+                v.currentTime = 0; 
+                v.play().catch(function(e){ console.log("播放失败"); }); 
+                var paw = document.getElementById('teaching-paw');
+                if(paw) paw.style.display = 'block';
+            }
+            startTime = Date.now();
+            var charDisplay = document.getElementById('study-char');
+            charDisplay.classList.remove('breathe');
+            void charDisplay.offsetWidth; 
+            charDisplay.classList.add('breathe');
+        }
+
+        function goToScan() {
+            switchPracticeStep('step-scan');
+            startCam('video-back', 'environment');
+        }
+
+        function backToPractice() {
+            if (streamObj) streamObj.getTracks().forEach(t => t.stop());
+            switchPracticeStep('step-2');
+        }
+
+        async function startCam(id, mode) {
+            if (streamObj) streamObj.getTracks().forEach(function(t) { t.stop(); });
+            try {
+                var stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: mode, width: { ideal: 1280 }, height: { ideal: 720 } }, 
+                    audio: false 
+                });
+                streamObj = stream;
+                document.getElementById(id).srcObject = stream;
+            } catch (e) { console.log("Cam error:", e); }
+        }
+
+        function capture() { try { var vid = document.getElementById('video-back'); var cvs = document.getElementById('cvs'); var ctx = cvs.getContext('2d'); cvs.width = 600; cvs.height = 600; var sx = (vid.videoWidth - vid.videoHeight)/2; ctx.drawImage(vid, sx, 0, vid.videoHeight, vid.videoHeight, 0, 0, 600, 600); var url = cvs.toDataURL('image/jpeg'); document.getElementById('adjust-img').src = url; document.getElementById('final-img').src = url; if (streamObj) streamObj.getTracks().forEach(function(t) { t.stop(); }); switchPracticeStep('step-adjust'); } catch(e) { alert("请刷新重试"); } }
+        
+        var posX=0, posY=0, startX=0, startY=0, lastX=0, lastY=0;
+        var touchArea = document.getElementById('step-adjust');
+        if(touchArea){
+            touchArea.addEventListener('touchstart', function(e) { if(e.target.tagName==='INPUT')return; startX=e.touches[0].clientX; startY=e.touches[0].clientY; lastX=posX; lastY=posY; });
+            touchArea.addEventListener('touchmove', function(e) { if(e.target.tagName==='INPUT')return; e.preventDefault(); posX=lastX+(e.touches[0].clientX-startX); posY=lastY+(e.touches[0].clientY-startY); updateAdjust(); });
+        }
+        function updateAdjust() { var sImg = document.getElementById('scale-img').value; var sTxt = document.getElementById('scale-text').value; document.getElementById('adjust-img').style.transform = 'translate(calc(-50% + '+posX+'px), calc(-50% + '+posY+'px)) scale('+sImg+')'; document.querySelector('.adjust-text').style.transform = 'scale('+sTxt+')'; }
+
+        function checkPixelQuality() {
+            try {
+                var cvs = document.getElementById('analysis-cvs');
+                var ctx = cvs.getContext('2d');
+                var rawCvs = document.getElementById('cvs');
+                ctx.drawImage(rawCvs, 0, 0, 100, 100); 
+                var imgData = ctx.getImageData(0,0,100,100).data;
+                var totalBright = 0;
+                for(var i=0; i<imgData.length; i+=4) { totalBright += (imgData[i] + imgData[i+1] + imgData[i+2])/3; }
+                var avgBright = totalBright / (100*100);
+                if(avgBright < 30) return "too_dark";
+                if(avgBright > 240) return "too_bright";
+                return "ok";
+            } catch(e) { return "ok"; }
+        }
+
+        function checkQualityAndConfirm() {
+            var quality = checkPixelQuality();
+            if(quality === "too_dark") { alert("🐼 潘哒哒提示：\n光线太暗啦，看不清字哦！\n请开灯后再拍一次吧~"); return; }
+            if(quality === "too_bright") { alert("🐼 潘哒哒提示：\n太亮啦，纸张反光看不清字！\n换个角度拍拍看~"); return; }
+            document.getElementById('confirm-modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('confirm-modal').style.display = 'none'; }
+
+        function confirmAndReport() {
+            closeModal();
+            document.getElementById('ai-loading').style.display = 'flex';
+            generateSmartComment();
+            setTimeout(function() {
+                document.getElementById('ai-loading').style.display = 'none';
+                finishAdjustReal();
+            }, 1500);
+        }
+
+        function generateSmartComment() {
+            var duration = (Date.now() - startTime); 
+            var speedType = 'normal';
+            if (duration < 8000) speedType = 'fast'; 
+            if (duration > 30000) speedType = 'slow'; 
+
+            var openList = COMMENT_DB.openings[speedType];
+            var opening = openList[Math.floor(Math.random() * openList.length)];
+
+            var charKey = currentActiveChar.char;
+            var detailList = COMMENT_DB.details[charKey] || COMMENT_DB.details["default"];
+            var techDetail = detailList[Math.floor(Math.random() * detailList.length)];
+
+            var structureInfo = "";
+            var currentLessonIdNum = COURSE_DATA[currentLessonId].id;
+
+            var flatChars = ["回", "四", "田", "白", "春", "共", "元"];
+            var tallChars = ["日", "目", "自", "青", "止", "他", "当"];
+            var leftSmallChars = ["没", "队"];
+            var semiChars = ["造", "远", "运"];
+            var obliqueHookChars = ["飞", "气"];
+            var speechChars = ["请", "证", "识", "认", "让"]; 
+            var symmetryChars = ["尖", "米", "平"];
+            var diagonalChars = ["广", "为", "外", "兴"];
+            
+            var dotRulesChars = ["沙", "方"]; 
+            var flatPieChars = ["千", "禾"];
+            var slantPieChars = ["认", "从"];
+            var verticalPieChars = ["胡", "讲", "开", "用", "月", "皮", "井"];
+            var flatNaChars = ["之", "造", "远", "近", "还", "过"];
+            // 🔥 Lesson 10
+            var semiWrapChars = ["包", "饱", "抱"];
+            var lengthContrastChars = ["左", "右", "石", "有"];
+
+            var structType = "general";
+
+            if (currentLessonIdNum === 6) {
+                if (["让", "广", "沙", "方"].includes(charKey)) structType = "dotRules";
+            } else if (currentLessonIdNum === 7) {
+                if (flatPieChars.includes(charKey)) structType = "flatPie";
+                else if (slantPieChars.includes(charKey)) structType = "slantPie";
+            } else if (currentLessonIdNum === 8) {
+                if (verticalPieChars.includes(charKey)) structType = "verticalPie";
+            } else if (currentLessonIdNum === 9) {
+                if (flatNaChars.includes(charKey)) structType = "flatNa";
+            } else if (currentLessonIdNum === 10) {
+                if (semiWrapChars.includes(charKey)) structType = "semiWrap";
+            } else {
+                if (flatChars.includes(charKey)) structType = "flat";
+                else if (tallChars.includes(charKey)) structType = "tall";
+                else if (leftSmallChars.includes(charKey)) structType = "leftSmall";
+                else if (semiChars.includes(charKey)) structType = "semi";
+                else if (obliqueHookChars.includes(charKey)) structType = "obliqueHook";
+                else if (speechChars.includes(charKey)) structType = "speechRadical";
+                else if (symmetryChars.includes(charKey)) structType = "symmetry";
+                else if (diagonalChars.includes(charKey)) structType = "diagonal";
+            }
+            
+            if (Math.random() > 0.3) { 
+                var structList = COMMENT_DB.structure[structType] || COMMENT_DB.structure["general"];
+                structureInfo = structList[Math.floor(Math.random() * structList.length)];
+            }
+
+            var closing = COMMENT_DB.closings[Math.floor(Math.random() * COMMENT_DB.closings.length)];
+            var finalComment = opening + techDetail + (structureInfo ? " " + structureInfo : "") + " " + closing;
+            document.getElementById('ai-comment').innerHTML = finalComment;
+        }
+
+        function finishAdjustReal() {
+            var finalImg = document.getElementById('final-img');
+            finalImg.src = document.getElementById('adjust-img').src;
+            finalImg.style.transform = document.getElementById('adjust-img').style.transform;
+            var v = document.getElementById('study-video');
+            if(v) v.pause();
+            var stamp = document.querySelector('.stamp');
+            stamp.classList.remove('show');
+            void stamp.offsetWidth;
+            stamp.classList.add('show');
+            switchPracticeStep('step-report');
+        }
+
+        const COURSE_DATA = [
+            { id: 1, title: "基本笔画练习", rule_desc: "短横、短竖", chars: [ { char: "春", pinyin: "chūn", video: "videos/春.mp4" }, { char: "青", pinyin: "qīng", video: "videos/青.mp4" }, { char: "当", pinyin: "dāng", video: "videos/当.mp4" }, { char: "共", pinyin: "gòng", video: "videos/共.mp4" }, { char: "元", pinyin: "yuán", video: "videos/元.mp4" }, { char: "止", pinyin: "zhǐ", video: "videos/止.mp4" }, { char: "他", pinyin: "tā", video: "videos/他.mp4" } ] },
+            { id: 2, title: "笔顺规则掌握", rule_desc: "先外后内再封口", chars: [ { char: "回", pinyin: "huí", video: "videos/回.mp4" }, { char: "日", pinyin: "rì", video: "videos/日.mp4" }, { char: "目", pinyin: "mù", video: "videos/目.mp4" }, { char: "自", pinyin: "zì", video: "videos/自.mp4" }, { char: "田", pinyin: "tián", video: "videos/田.mp4" }, { char: "四", pinyin: "sì", video: "videos/四.mp4" }, { char: "白", pinyin: "bái", video: "videos/白.mp4" } ] },
+            { id: 3, title: "基本笔画练习", rule_desc: "横折弯、横折折撇、横撇弯钩", chars: [ { char: "没", pinyin: "méi", video: "videos/没.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "队", pinyin: "duì", video: "videos/队.mp4" }, { char: "朵", pinyin: "duǒ", video: "videos/朵.mp4" }, { char: "运", pinyin: "yùn", video: "videos/运.mp4" } ] },
+            { id: 4, title: "基本笔画练习", rule_desc: "横斜钩、横折提", chars: [ { char: "飞", pinyin: "fēi", video: "videos/飞.mp4" }, { char: "请", pinyin: "qǐng", video: "videos/请.mp4" }, { char: "证", pinyin: "zhèng", video: "videos/证.mp4" }, { char: "识", pinyin: "shí", video: "videos/识.mp4" }, { char: "气", pinyin: "qì", video: "videos/气.mp4" }, { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" } ] },
+            { id: 5, title: "基本笔画练习", rule_desc: "左点、右点", chars: [ { char: "尖", pinyin: "jiān", video: "videos/尖.mp4" }, { char: "米", pinyin: "mǐ", video: "videos/米.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "为", pinyin: "wèi", video: "videos/为.mp4" }, { char: "外", pinyin: "wài", video: "videos/外.mp4" }, { char: "兴", pinyin: "xìng", video: "videos/兴.mp4" }, { char: "平", pinyin: "píng", video: "videos/平.mp4" } ] },
+            { id: 6, title: "部件组合与笔顺", rule_desc: "点的位置与形态", chars: [ { char: "沙", pinyin: "shā", video: "videos/沙.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "方", pinyin: "fāng", video: "videos/方.mp4" } ] },
+            { id: 7, title: "基本笔画练习", rule_desc: "平撇、斜撇", chars: [ { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "从", pinyin: "cóng", video: "videos/从.mp4" }, { char: "千", pinyin: "qiān", video: "videos/千.mp4" }, { char: "禾", pinyin: "hé", video: "videos/禾.mp4" } ] },
+            { id: 8, title: "基本笔画练习", rule_desc: "竖撇", chars: [ { char: "胡", pinyin: "hú", video: "videos/胡.mp4" }, { char: "讲", pinyin: "jiǎng", video: "videos/讲.mp4" }, { char: "开", pinyin: "kāi", video: "videos/开.mp4" }, { char: "用", pinyin: "yòng", video: "videos/用.mp4" }, { char: "月", pinyin: "yuè", video: "videos/月.mp4" }, { char: "皮", pinyin: "pí", video: "videos/皮.mp4" }, { char: "井", pinyin: "jǐng", video: "videos/井.mp4" } ] },
+            { id: 9, title: "基本笔画练习", rule_desc: "平捺", chars: [ { char: "之", pinyin: "zhī", video: "videos/之.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "近", pinyin: "jìn", video: "videos/近.mp4" }, { char: "还", pinyin: "hái", video: "videos/还.mp4" }, { char: "过", pinyin: "guò", video: "videos/过.mp4" } ] },
+            // 🔥 Lesson 10 上线
+            { 
+                id: 10, 
+                title: "笔顺规则掌握", 
+                rule_desc: "左上包围和右上包围", 
+                chars: [
+                    { char: "左", pinyin: "zuǒ", video: "videos/左.mp4" },
+                    { char: "右", pinyin: "yòu", video: "videos/右.mp4" },
+                    { char: "石", pinyin: "shí", video: "videos/石.mp4" },
+                    { char: "有", pinyin: "yǒu", video: "videos/有.mp4" },
+                    { char: "包", pinyin: "bāo", video: "videos/包.mp4" },
+                    { char: "饱", pinyin: "bǎo", video: "videos/饱.mp4" },
+                    { char: "抱", pinyin: "bào", video: "videos/抱.mp4" }
+                ] 
+            }
+        ];
+
+        window.onload = function() { 
+            renderHome(); 
+            startCam('video-front', 'user'); 
+        };
+
+        function renderHome() { 
+            const list = document.getElementById('course-list'); 
+            if (!list) return;
+            list.innerHTML = ""; 
+            COURSE_DATA.forEach(function(course, idx) { 
+                const div = document.createElement('div'); 
+                div.className = 'course-card'; 
+                div.onclick = function() { openLevel(idx); }; 
+                div.innerHTML = "<div style='display:flex;align-items:center;'><div class='course-idx'>" + course.id + "</div><div class='course-info'><div class='course-title'>" + course.title + "</div><div class='course-desc'>🎯 " + course.rule_desc + "</div></div></div><div class='course-arrow'>➜</div>"; 
+                list.appendChild(div); 
+            }); 
+        }
+
+        function openLevel(idx) { const course = COURSE_DATA[idx]; currentLessonId = idx; document.getElementById('level-title').innerText = course.title; const grid = document.getElementById('char-list'); grid.innerHTML = ""; if(course.chars.length === 0) { grid.innerHTML = "<div style='color:#999;width:300%;text-align:center;'>本课内容即将上线...</div>"; } else { course.chars.forEach(function(item, charIdx) { const div = document.createElement('div'); div.className = 'char-card'; div.onclick = function() { startApp(charIdx); }; div.innerHTML = "<div class='mi-grid'></div><div class='char-card-pinyin'>" + item.pinyin + "</div><div class='char-card-text'>" + item.char + "</div>"; grid.appendChild(div); }); } navigateTo('level-screen'); }
+        
+        function startApp(charIdx) { 
+            currentActiveChar = COURSE_DATA[currentLessonId].chars[charIdx]; 
+            document.querySelectorAll('#study-char, #ghost-char, #adjust-char-overlay').forEach(function(el) { el.innerText = currentActiveChar.char; }); 
+            var v = document.getElementById('study-video');
+            v.src = currentActiveChar.video; 
+            v.pause(); 
+            v.currentTime = 0;
+            document.getElementById('lesson-rule-hint').innerText = COURSE_DATA[currentLessonId].rule_desc; 
+            switchPracticeStep('step-1'); 
+            navigateTo('practice-screen'); 
+        }
+    </script>
+</body>
+</html>

@@ -526,7 +526,7 @@
                 div.className = 'course-card'; 
                 // 传 course 对象本身，而不是索引
                 div.onclick = function() { openLevel(course); }; 
-                div.innerHTML = "<div style='display:flex;align-items:center;'><div class='course-idx'>" + course.id + "</div><div class='course-info'><div class='course-title'>" + course.title + "</div><div class='course-desc'>🎯 " + course.rule_desc + "</div></div></div><div class='course-arrow'>➜</div>"; 
+                div.innerHTML = "<div style='display:flex;align-items:center;'><div class='course-idx'>" + (idx + 1) + "</div><div class='course-info'><div class='course-title'>" + course.title + "</div><div class='course-desc'>🎯 " + course.rule_desc + "</div></div></div><div class='course-arrow'>➜</div>"; 
                 list.appendChild(div); 
             }); 
         }
@@ -761,4 +761,5 @@
     </script>
 </body>
 </html>
+
 

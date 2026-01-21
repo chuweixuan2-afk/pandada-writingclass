@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>潘哒哒书法课</title>
+    <title>潘哒哒书法课 - 全集完结版</title>
     
     <style>
-        /* ================= 视觉系统 (v7.5) ================= */
+        /* ================= 视觉系统 (v7.8 稳定版) ================= */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: #F5F1E8; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; height: 100vh; overflow: hidden; color: #3E2723; }
 
@@ -24,22 +24,15 @@
             50% { transform: scale(1.08); color: #d35400; }
             100% { transform: scale(1); color: #333; }
         }
-        .breathe { 
-            animation: breathe 3s infinite ease-in-out; 
-            position: relative; z-index: 10;
-        }
+        .breathe { animation: breathe 3s infinite ease-in-out; position: relative; z-index: 10; }
 
         @keyframes paw-move {
             0%, 100% { transform: translateY(0) rotate(10deg); }
             50% { transform: translateY(-10px) rotate(5deg); }
         }
         #teaching-paw {
-            display: none;
-            position: absolute;
-            bottom: -20px; right: -20px;
-            width: 60px;
-            z-index: 20;
-            pointer-events: none;
+            display: none; position: absolute; bottom: -20px; right: -20px;
+            width: 60px; z-index: 20; pointer-events: none;
             animation: paw-move 1.5s infinite ease-in-out;
         }
 
@@ -51,17 +44,13 @@
         .thinking-anim { animation: breathe-panda 1.5s infinite ease-in-out; }
 
         .cheer-panda {
-            position: absolute; right: -5px; top: -55px;
-            width: 90px; transform: rotate(10deg);
-            z-index: 5;
-            pointer-events: none;
+            position: absolute; right: -5px; top: -55px; width: 90px;
+            transform: rotate(10deg); z-index: 5; pointer-events: none;
         }
 
-        /* 步骤一：坐姿引导 */
+        /* 坐姿引导 */
         .posture-text-top {
-            position: absolute; top: 13%; 
-            left: 0; width: 100%; 
-            text-align: center;
+            position: absolute; top: 13%; left: 0; width: 100%; text-align: center;
             color: #FFD700; font-size: 20px; font-weight: bold;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8); z-index: 60; letter-spacing: 1px;
         }
@@ -70,41 +59,24 @@
             width: 260px; height: 350px; border: 4px dashed #FF9800;
             border-radius: 150px 150px 0 0; box-shadow: 0 0 0 1000px rgba(0,0,0,0.6); z-index: 50;
         }
-        
         .posture-tips-box {
-            position: absolute; 
-            bottom: 100px;
-            left: 50%; transform: translateX(-50%);
-            width: 85%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px; padding: 15px; 
-            border: 2px solid #FFCC80;
-            z-index: 60;
-            font-size: 15px; color: #5D4037; font-weight: bold; line-height: 1.6;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+            width: 85%; background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px; padding: 15px; border: 2px solid #FFCC80;
+            z-index: 60; font-size: 15px; color: #5D4037; font-weight: bold;
+            line-height: 1.6; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .posture-panda-icon {
-            position: absolute;
-            top: -45px;
-            left: -10px; 
-            width: 70px;
-            transform: rotate(-10deg);
-        }
+        .posture-panda-icon { position: absolute; top: -45px; left: -10px; width: 70px; transform: rotate(-10deg); }
 
-        /* 步骤二：练习 */
+        /* 学习区 */
         .study-container { 
-            width: 100%; flex: 1; 
-            display: flex; flex-direction: column; align-items: center; 
-            background: #FFF8E1; padding-top: 40px; overflow-y: auto;
-            padding-bottom: 120px; 
+            width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; 
+            background: #FFF8E1; padding-top: 40px; overflow-y: auto; padding-bottom: 120px; 
         }
         .word-display { 
-            font-size: 20px; color: #E65100; font-weight: bold; 
-            margin-bottom: 10px; background: #FFE0B2; 
-            padding: 5px 15px; border-radius: 20px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            display: none; /* 默认隐藏，有词语时显示 */
+            font-size: 20px; color: #E65100; font-weight: bold; margin-bottom: 10px; 
+            background: #FFE0B2; padding: 5px 15px; border-radius: 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: none; 
         }
         .lesson-panda { position: absolute; top: -45px; right: 10px; width: 70px; transform: rotate(10deg); }
         .prep-tips { 
@@ -112,82 +84,44 @@
             border-radius: 10px; padding: 12px; font-size: 13px; color: #5D4037; 
             line-height: 1.6; border: 1px solid #EFEBE9; position: relative; 
         }
-
         .hint-card { 
-            background: #FFF3E0; 
-            padding: 12px 20px; 
-            border-radius: 12px; margin-top: 10px; 
-            color: #E65100; font-size: 15px;
-            text-align: center; 
-            width: 90%; 
-            border: 1px dashed #FFB74D; 
-            display: flex; flex-direction: column; justify-content: center; 
+            background: #FFF3E0; padding: 12px 20px; border-radius: 12px; margin-top: 10px; 
+            color: #E65100; font-size: 15px; text-align: center; width: 90%; 
+            border: 1px dashed #FFB74D; display: flex; flex-direction: column; justify-content: center; 
         }
 
-        /* 步骤三：魔镜 */
+        /* 拍照区 */
         .scan-hint-box {
             position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
-            display: flex; 
-            justify-content: center;
-            align-items: center; 
-            background: rgba(0,0,0,0.6);
-            padding: 10px 20px; 
-            border-radius: 30px; 
-            z-index: 60; 
-            width: 80%;
-            overflow: visible;
+            display: flex; justify-content: center; align-items: center; 
+            background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 30px; 
+            z-index: 60; width: 80%; overflow: visible;
         }
-        .scan-hint-text { 
-            color: white; font-size: 15px; font-weight: bold; 
-            text-align: center; width: 100%;
-        }
-        .scan-panda-icon {
-            position: absolute;
-            right: -10px; top: -35px;
-            width: 60px;
-            transform: rotate(15deg);
-        }
-
+        .scan-hint-text { color: white; font-size: 15px; font-weight: bold; text-align: center; width: 100%; }
+        .scan-panda-icon { position: absolute; right: -10px; top: -35px; width: 60px; transform: rotate(15deg); }
         .scan-overlay-box {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px; height: 150px;
-            border: 3px solid #FFD700;
-            box-shadow: 0 0 0 1000px rgba(0,0,0,0.7);
-            z-index: 50;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 150px; height: 150px; border: 3px solid #FFD700;
+            box-shadow: 0 0 0 1000px rgba(0,0,0,0.7); z-index: 50;
             display: flex; justify-content: center; align-items: center;
         }
-        
         #ghost-char {
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0.6; color: red; 
-            font-size: 85px; 
-            font-family: 'KaiTi';
+            width: 100%; height: 100%; display: flex; justify-content: center; 
+            align-items: center; opacity: 0.6; color: red; font-size: 85px; font-family: 'KaiTi';
         }
 
-        /* 步骤四：校准 */
+        /* 调整区 */
         .adjust-box { width: 200px; height: 200px; border: 2px solid #FFD700; overflow: hidden; background: #fff; margin-bottom: 20px; position: relative; }
         #adjust-img { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; object-fit: cover; transform: translate(-50%, -50%); opacity: 0.7; }
         .adjust-overlay { position: absolute; width: 100%; height: 100%; pointer-events: none; display: flex; justify-content: center; align-items: center; top: 0; left: 0; }
         .adjust-text { font-family: 'KaiTi'; font-size: 120px; color: #e74c3c; opacity: 0.6; transform-origin: center center; }
-        
         .controls { width: 90%; color: white; display: flex; flex-direction: column; gap: 15px; position: relative; }
         .range-wrap { display: flex; align-items: center; justify-content: space-between; font-size: 16px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; }
         input[type=range] { -webkit-appearance: none; width: 65%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 5px; outline: none; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 35px; height: 35px; border-radius: 50%; background: #FF9500; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.4); border: 3px solid white; }
-        
-        .controls-hint-box {
-            display: flex; justify-content: center; align-items: center;
-            margin-top: 15px; gap: 5px;
-        }
-        .controls-hint-text { 
-            font-size:18px; font-weight:800; color:#FFD700; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9); letter-spacing: 1px;
-        }
-        .controls-panda-icon {
-            width: 45px; height: auto; transform: rotate(-10deg);
-        }
+        .controls-hint-box { display: flex; justify-content: center; align-items: center; margin-top: 15px; gap: 5px; }
+        .controls-hint-text { font-size:18px; font-weight:800; color:#FFD700; text-shadow: 0 2px 4px rgba(0,0,0,0.9); letter-spacing: 1px; }
+        .controls-panda-icon { width: 45px; height: auto; transform: rotate(-10deg); }
 
         /* 首页 & 列表 */
         #home-screen { padding: 20px; overflow-y: auto; }
@@ -208,10 +142,7 @@
         .course-arrow { color: #FFCC80; font-size: 20px; }
 
         /* 选字网格 */
-        .char-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; 
-            padding: 20px; overflow-y: auto; flex: 1;
-        }
+        .char-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px; overflow-y: auto; flex: 1; }
         .char-card { 
             background: #fff; aspect-ratio: 1; border-radius: 12px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
@@ -230,10 +161,7 @@
             position: relative; 
         }
         .video-box video { width: 100%; height: 100%; object-fit: contain; }
-        .tian-zi-ge { 
-            width: 160px; height: 160px; border: 3px solid #e74c3c; 
-            background: #fff; position: relative; flex-shrink: 0; 
-        }
+        .tian-zi-ge { width: 160px; height: 160px; border: 3px solid #e74c3c; background: #fff; position: relative; flex-shrink: 0; }
         .line-h { position: absolute; top: 50%; width: 100%; border-top: 1px dashed #e74c3c; }
         .line-v { position: absolute; left: 50%; height: 100%; border-left: 1px dashed #e74c3c; }
         .char-display { font-family: 'KaiTi'; font-size: 130px; line-height: 160px; text-align: center; width: 100%; height: 100%; position: absolute; }
@@ -258,15 +186,8 @@
         .btn-ok { flex:1; padding: 10px; background: #FF9800; color: white; border-radius: 25px; border:none; font-weight: bold; }
 
         /* 步骤页面通用样式 */
-        .step-section { 
-            display: none; 
-            width: 100%; height: 100%; 
-            flex-direction: column !important;
-            align-items: center; 
-            position: absolute; top:0; left:0; 
-        }
+        .step-section { display: none; width: 100%; height: 100%; flex-direction: column !important; align-items: center; position: absolute; top:0; left:0; }
         .step-section.active { display: flex !important; }
-
         #step-1, #step-scan, #step-adjust { justify-content: center; }
         #step-2, #step-report { justify-content: flex-start; }
     </style>
@@ -414,7 +335,6 @@
                 slow: ["凝神静气，每一笔都写得很扎实，", "沉稳有力，起笔和收笔都照顾到了，", "经过深思熟虑的一笔，虽然慢但很稳，"]
             },
             structure: {
-                // 通用结构
                 flat: ["很好地体现了<b>‘横长竖短’</b>的特点。", "整体字形<b>扁方稳重</b>，没有写得太瘦长。", "注意到了外框<b>‘上宽下窄’</b>的透视感，很专业。", "横向舒展，字形看起来非常稳固。"],
                 tall: ["完美抓住了<b>‘横短竖长’</b>的关键特征。", "字形<b>挺拔修长</b>，像个站军姿的小战士。", "竖画写得<b>垂直有力</b>，撑起了整个字的骨架。", "<b>‘竖长且直’</b>，看起来非常有精神。"],
                 leftSmall: ["左边的偏旁写得<b>小巧紧凑</b>，给右边留足了面子。", "<b>左窄右宽</b>的比例控制得很棒，很有层次。", "左边收紧，右边舒展，这就叫<b>‘避让’</b>。", "左边的关键笔画形态较小，没有喧宾夺主。"],
@@ -429,7 +349,7 @@
                 verticalPie: ["这个<b>竖撇</b>写得太标准了！<b>先直后弯</b>，下半段才自然弯出。", "注意到了吗？这一笔<b>不能直接写斜</b>，要先顿笔向下，再向左撇出。", "这一笔写得很有韧劲，像一棵被风吹弯的小树，<b>挺而不僵</b>。"],
                 flatNa: ["这个<b>平捺</b>写得真漂亮！就像一辆<b>小车</b>一样，稳稳地托住了上面的部分。", "注意到了吗？<b>平捺</b>要写出<b>‘一波三折’</b>的感觉，起伏很有节奏。", "笔顺完全正确！你是<b>先写右上部分</b>，再写左下的‘走之’，这就叫<b>先内后外</b>。"],
                 semiWrap: ["<b>先外后内</b>，笔顺完全正确！先把框搭好，再写里面的内容。", "左上包围的字，外面的框要写得<b>舒展</b>，把里面的字抱住。", "里面的字写得<b>居中平稳</b>，没有掉出来，结构很紧凑。"],
-                // 二年级新增结构
+                
                 leftUpperWrap: ["这是一个典型的<b>左上包围</b>字，你做到了<b>‘左包右放’</b>！", "外面的框框写得舒展，里面的内容写得稳重，搭配完美。", "被包围的部分没有缩手缩脚，而是向右边大大方方地展示出来了。"],
                 
                 general: ["整个字的<b>重心</b>找得很准。", "笔画之间的<b>呼应关系</b>处理得很妙。", "符合<b>笔顺规则</b>，结构匀称。"]
@@ -451,7 +371,7 @@
                 "四": ["特别表扬！里面的<b>‘竖弯’</b>没有写成钩，观察真仔细。", "字形呈<b>扁方形</b>，外框宽绰不拥挤。", "竖弯转弯处圆润流畅，线条很美。"],
                 "白": ["第一笔<b>撇</b>起笔在竖中线上，定好了重心。", "下面的框依然保持了<b>‘横长折短’</b>的宽扁趋势。", "整体上宽下窄，看起来轻盈又稳当。"],
                 "没": ["第五笔<b>横折弯</b>写得很好，‘折处稍顿，弯处不顿’。", "<b>横折弯</b>形态控制得小巧，给右边留足了空间。", "特别表扬！这个弯是圆转的，而且<b>没有钩</b>！"],
-                "造": ["里面的‘告’字坐得很稳，被下面的<b>平捺</b>完美地<b>托住</b>了。", "先写完‘告’，再写走之底，笔顺完全正确！", "最后的<b>平捺</b>略向右下平缓行笔，托住了整个字。"],
+                "造": ["里面的‘告’字坐得很稳，被下面的<b>平捺</b>完美地<b>托住</b>了。", "先写完‘告’，再写走之底，笔顺规则掌握得很好！", "最后的<b>平捺</b>略向右下平缓行笔，托住了整个字。"],
                 "远": ["<b>平捺</b>向右延伸得很长，像小船一样载着上面的‘元’字。", "右上部分的‘元’写得高高的，给走之底留出了通过的道路。", "竖弯钩没有掉下来，被完美接住了。"],
                 "队": ["左耳旁的<b>横撇弯钩</b>衔接得轻巧自然，一气呵成。", "左边的耳朵旁写得<b>窄窄的</b>，位置偏高，很精神。", "右边的撇捺舒展，和左边的紧凑形成鲜明对比。"],
                 "朵": ["注意！上面的‘几’是<b>横折弯钩</b>，你写出了钩，没搞混！", "转弯的地方圆润流畅，<b>不滞涩</b>，出钩很快。", "上面宽扁，下面稳重，<b>上宽下窄</b>重心很稳。"],
@@ -494,7 +414,7 @@
                 "饱": ["加上了食字旁，右边的‘包’字<b>变窄了</b>，给左边留出了位置。", "左窄右宽，食字旁的撇画和右边的包配合默契，没有打架。", "右边的竖弯钩依然很舒展，把字托住了。"],
                 "抱": ["提手旁昂首挺胸，右边的‘包’字<b>字形收窄</b>，显得很精神。", "提手旁的提画有力，右边的竖弯钩依然保持了舒展，刚柔并济。", "左右两部分紧紧抱在一起，结构很紧凑。"],
 
-                // 二年级生字 (Grade 2)
+                // 二年级第一课
                 "原": [ "注意到了吗？厂字旁的<b>横画短且稍向上斜</b>，你写得很标准！", "里面的‘白’和‘小’写得稳稳当当，没有掉出来。", "<b>撇画写得很舒展</b>，包住了里面的部分，这就叫‘左包右放’！" ],
                 "店": [ "广字旁的<b>首点居中</b>，位置找得很准！", "里面的‘占’字没有缩在角落里，而是大胆地<b>向右伸展</b>了。", "横画写得不长，把位置让给了那一笔舒展的<b>长撇</b>。" ],
                 "底": [ "哇！这一笔<b>斜钩</b>写得太漂亮了，向右伸展，非常大气！", "左边的撇向左伸，右边的斜钩向右伸，这就叫<b>舒展大方</b>。", "下面的点画写得很有节奏，没有粘连。" ],
@@ -515,26 +435,25 @@
         var currentActiveCourse = null;
         var startTime = 0; 
 
-        // 📦 课程数据库：包含 Grade 1, 2, 3
+        // 📦 课程数据库：Grade 1, 2, 3
         const COURSE_DATA = [
             // === 一年级内容 (Grade 1) ===
-            { id: 1, grade: 1, title: "基本笔画练习", rule_desc: "短横、短竖", chars: [ { char: "春", pinyin: "chūn", video: "videos/春.mp4" }, { char: "青", pinyin: "qīng", video: "videos/青.mp4" }, { char: "当", pinyin: "dāng", video: "videos/当.mp4" }, { char: "共", pinyin: "gòng", video: "videos/共.mp4" }, { char: "元", pinyin: "yuán", video: "videos/元.mp4" }, { char: "止", pinyin: "zhǐ", video: "videos/止.mp4" }, { char: "他", pinyin: "tā", video: "videos/他.mp4" } ] },
-            { id: 2, grade: 1, title: "笔顺规则掌握", rule_desc: "先外后内再封口", chars: [ { char: "回", pinyin: "huí", video: "videos/回.mp4" }, { char: "日", pinyin: "rì", video: "videos/日.mp4" }, { char: "目", pinyin: "mù", video: "videos/目.mp4" }, { char: "自", pinyin: "zì", video: "videos/自.mp4" }, { char: "田", pinyin: "tián", video: "videos/田.mp4" }, { char: "四", pinyin: "sì", video: "videos/四.mp4" }, { char: "白", pinyin: "bái", video: "videos/白.mp4" } ] },
-            { id: 3, grade: 1, title: "基本笔画练习", rule_desc: "横折弯、横折折撇、横撇弯钩", chars: [ { char: "没", pinyin: "méi", video: "videos/没.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "队", pinyin: "duì", video: "videos/队.mp4" }, { char: "朵", pinyin: "duǒ", video: "videos/朵.mp4" }, { char: "运", pinyin: "yùn", video: "videos/运.mp4" } ] },
-            { id: 4, grade: 1, title: "基本笔画练习", rule_desc: "横斜钩、横折提", chars: [ { char: "飞", pinyin: "fēi", video: "videos/飞.mp4" }, { char: "请", pinyin: "qǐng", video: "videos/请.mp4" }, { char: "证", pinyin: "zhèng", video: "videos/证.mp4" }, { char: "识", pinyin: "shí", video: "videos/识.mp4" }, { char: "气", pinyin: "qì", video: "videos/气.mp4" }, { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" } ] },
-            { id: 5, grade: 1, title: "基本笔画练习", rule_desc: "左点、右点", chars: [ { char: "尖", pinyin: "jiān", video: "videos/尖.mp4" }, { char: "米", pinyin: "mǐ", video: "videos/米.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "为", pinyin: "wèi", video: "videos/为.mp4" }, { char: "外", pinyin: "wài", video: "videos/外.mp4" }, { char: "兴", pinyin: "xìng", video: "videos/兴.mp4" }, { char: "平", pinyin: "píng", video: "videos/平.mp4" } ] },
-            { id: 6, grade: 1, title: "部件组合与笔顺", rule_desc: "点的位置与形态", chars: [ { char: "沙", pinyin: "shā", video: "videos/沙.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "方", pinyin: "fāng", video: "videos/方.mp4" } ] },
-            { id: 7, grade: 1, title: "基本笔画练习", rule_desc: "平撇、斜撇", chars: [ { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "从", pinyin: "cóng", video: "videos/从.mp4" }, { char: "千", pinyin: "qiān", video: "videos/千.mp4" }, { char: "禾", pinyin: "hé", video: "videos/禾.mp4" } ] },
-            { id: 8, grade: 1, title: "基本笔画练习", rule_desc: "竖撇", chars: [ { char: "胡", pinyin: "hú", video: "videos/胡.mp4" }, { char: "讲", pinyin: "jiǎng", video: "videos/讲.mp4" }, { char: "开", pinyin: "kāi", video: "videos/开.mp4" }, { char: "用", pinyin: "yòng", video: "videos/用.mp4" }, { char: "月", pinyin: "yuè", video: "videos/月.mp4" }, { char: "皮", pinyin: "pí", video: "videos/皮.mp4" }, { char: "井", pinyin: "jǐng", video: "videos/井.mp4" } ] },
-            { id: 9, grade: 1, title: "基本笔画练习", rule_desc: "平捺", chars: [ { char: "之", pinyin: "zhī", video: "videos/之.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "近", pinyin: "jìn", video: "videos/近.mp4" }, { char: "还", pinyin: "hái", video: "videos/还.mp4" }, { char: "过", pinyin: "guò", video: "videos/过.mp4" } ] },
-            { id: 10, grade: 1, title: "笔顺规则掌握", rule_desc: "左上包围和右上包围", chars: [ { char: "左", pinyin: "zuǒ", video: "videos/左.mp4" }, { char: "右", pinyin: "yòu", video: "videos/右.mp4" }, { char: "石", pinyin: "shí", video: "videos/石.mp4" }, { char: "有", pinyin: "yǒu", video: "videos/有.mp4" }, { char: "包", pinyin: "bāo", video: "videos/包.mp4" }, { char: "饱", pinyin: "bǎo", video: "videos/饱.mp4" }, { char: "抱", pinyin: "bào", video: "videos/抱.mp4" } ] },
+            { id: 1, grade: 1, title: "第一课 基本笔画练习", rule_desc: "短横、短竖", chars: [ { char: "春", pinyin: "chūn", video: "videos/春.mp4" }, { char: "青", pinyin: "qīng", video: "videos/青.mp4" }, { char: "当", pinyin: "dāng", video: "videos/当.mp4" }, { char: "共", pinyin: "gòng", video: "videos/共.mp4" }, { char: "元", pinyin: "yuán", video: "videos/元.mp4" }, { char: "止", pinyin: "zhǐ", video: "videos/止.mp4" }, { char: "他", pinyin: "tā", video: "videos/他.mp4" } ] },
+            { id: 2, grade: 1, title: "第二课 笔顺规则掌握", rule_desc: "先外后内再封口", chars: [ { char: "回", pinyin: "huí", video: "videos/回.mp4" }, { char: "日", pinyin: "rì", video: "videos/日.mp4" }, { char: "目", pinyin: "mù", video: "videos/目.mp4" }, { char: "自", pinyin: "zì", video: "videos/自.mp4" }, { char: "田", pinyin: "tián", video: "videos/田.mp4" }, { char: "四", pinyin: "sì", video: "videos/四.mp4" }, { char: "白", pinyin: "bái", video: "videos/白.mp4" } ] },
+            { id: 3, grade: 1, title: "第三课 基本笔画练习", rule_desc: "横折弯、横折折撇、横撇弯钩", chars: [ { char: "没", pinyin: "méi", video: "videos/没.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "队", pinyin: "duì", video: "videos/队.mp4" }, { char: "朵", pinyin: "duǒ", video: "videos/朵.mp4" }, { char: "运", pinyin: "yùn", video: "videos/运.mp4" } ] },
+            { id: 4, grade: 1, title: "第四课 基本笔画练习", rule_desc: "横斜钩、横折提", chars: [ { char: "飞", pinyin: "fēi", video: "videos/飞.mp4" }, { char: "请", pinyin: "qǐng", video: "videos/请.mp4" }, { char: "证", pinyin: "zhèng", video: "videos/证.mp4" }, { char: "识", pinyin: "shí", video: "videos/识.mp4" }, { char: "气", pinyin: "qì", video: "videos/气.mp4" }, { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" } ] },
+            { id: 5, grade: 1, title: "第五课 基本笔画练习", rule_desc: "左点、右点", chars: [ { char: "尖", pinyin: "jiān", video: "videos/尖.mp4" }, { char: "米", pinyin: "mǐ", video: "videos/米.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "为", pinyin: "wèi", video: "videos/为.mp4" }, { char: "外", pinyin: "wài", video: "videos/外.mp4" }, { char: "兴", pinyin: "xìng", video: "videos/兴.mp4" }, { char: "平", pinyin: "píng", video: "videos/平.mp4" } ] },
+            { id: 6, grade: 1, title: "第六课 部件组合与笔顺", rule_desc: "点的位置与形态", chars: [ { char: "沙", pinyin: "shā", video: "videos/沙.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "方", pinyin: "fāng", video: "videos/方.mp4" } ] },
+            { id: 7, grade: 1, title: "第七课 基本笔画练习", rule_desc: "平撇、斜撇", chars: [ { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "从", pinyin: "cóng", video: "videos/从.mp4" }, { char: "千", pinyin: "qiān", video: "videos/千.mp4" }, { char: "禾", pinyin: "hé", video: "videos/禾.mp4" } ] },
+            { id: 8, grade: 1, title: "第八课 基本笔画练习", rule_desc: "竖撇", chars: [ { char: "胡", pinyin: "hú", video: "videos/胡.mp4" }, { char: "讲", pinyin: "jiǎng", video: "videos/讲.mp4" }, { char: "开", pinyin: "kāi", video: "videos/开.mp4" }, { char: "用", pinyin: "yòng", video: "videos/用.mp4" }, { char: "月", pinyin: "yuè", video: "videos/月.mp4" }, { char: "皮", pinyin: "pí", video: "videos/皮.mp4" }, { char: "井", pinyin: "jǐng", video: "videos/井.mp4" } ] },
+            { id: 9, grade: 1, title: "第九课 基本笔画练习", rule_desc: "平捺", chars: [ { char: "之", pinyin: "zhī", video: "videos/之.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "近", pinyin: "jìn", video: "videos/近.mp4" }, { char: "还", pinyin: "hái", video: "videos/还.mp4" }, { char: "过", pinyin: "guò", video: "videos/过.mp4" } ] },
+            { id: 10, grade: 1, title: "第十课 笔顺规则掌握", rule_desc: "左上包围和右上包围", chars: [ { char: "左", pinyin: "zuǒ", video: "videos/左.mp4" }, { char: "右", pinyin: "yòu", video: "videos/右.mp4" }, { char: "石", pinyin: "shí", video: "videos/石.mp4" }, { char: "有", pinyin: "yǒu", video: "videos/有.mp4" }, { char: "包", pinyin: "bāo", video: "videos/包.mp4" }, { char: "饱", pinyin: "bǎo", video: "videos/饱.mp4" }, { char: "抱", pinyin: "bào", video: "videos/抱.mp4" } ] },
             
             // === ✨ 二年级内容 (Grade 2) ===
             { 
-                id: 11, // 二年级开始
-                grade: 2, 
-                title: "第一课 左上包围", 
-                rule_desc: "左包右放，撇画舒展", 
+                id: 11, grade: 2, 
+                title: "第一课 厂字旁、广字旁、尸字旁、户字旁", 
+                rule_desc: "重点：厂、广、尸、户", 
                 chars: [
                     { char: "原", word: "原来", pinyin: "yuán", video: "videos/原.mp4" },
                     { char: "店", word: "商店", pinyin: "diàn", video: "videos/店.mp4" },
@@ -543,15 +462,40 @@
                     { char: "底", word: "到底", pinyin: "dǐ", video: "videos/底.mp4" }
                 ] 
             },
+            { 
+                id: 12, grade: 2, 
+                title: "第二课 日字旁、目字旁、舌字旁、又字旁", 
+                rule_desc: "重点：日、目、舌、又", 
+                chars: [
+                    { char: "晴", word: "晴天", pinyin: "qíng", video: "videos/晴.mp4" },
+                    { char: "睛", word: "眼睛", pinyin: "jīng", video: "videos/睛.mp4" }
+                ] 
+            },
+            { 
+                id: 13, grade: 2, 
+                title: "第三课 贝字旁、食字旁、鸟字旁、反文旁", 
+                rule_desc: "重点：贝、食、鸟、反文", 
+                chars: [
+                    { char: "败", word: "失败", pinyin: "bài", video: "videos/败.mp4" },
+                    { char: "饭", word: "吃饭", pinyin: "fàn", video: "videos/饭.mp4" }
+                ] 
+            },
+            { id: 14, grade: 2, title: "第四课 国字框、门字框、同字框、三框", rule_desc: "备课中...", chars: [] },
+            { id: 15, grade: 2, title: "第五课 心字底、四点底、皿字底、异字底", rule_desc: "备课中...", chars: [] },
+            { id: 16, grade: 2, title: "第六课 山字旁、石字旁、牛字旁、舟字旁", rule_desc: "备课中...", chars: [] },
+            { id: 17, grade: 2, title: "第七课 虫字旁、车字旁、病字旁、包字头", rule_desc: "备课中...", chars: [] },
+            { id: 18, grade: 2, title: "第八课 京字头、宝盖头、穴宝盖、雨字头", rule_desc: "备课中...", chars: [] },
 
-            // === 🚀 三年级内容 (Grade 3 - 空壳占位) ===
-            {
-                id: 21, // 三年级开始
-                grade: 3,
-                title: "第一课 敬请期待",
-                rule_desc: "课程正在备课中...",
-                chars: [] // 空列表，点击会提示备课中
-            }
+            // === 🚀 三年级内容 (Grade 3) ===
+            { id: 21, grade: 3, title: "第一课 三撇旁、欠字旁、页字旁", rule_desc: "备课中...", chars: [] },
+            { id: 22, grade: 3, title: "第二课 子字旁、弓字旁、马字旁", rule_desc: "备课中...", chars: [] },
+            { id: 23, grade: 3, title: "第三课 酉字旁、米字旁、方字旁", rule_desc: "备课中...", chars: [] },
+            { id: 24, grade: 3, title: "第四课 春字头、卷字头、父字头", rule_desc: "备课中...", chars: [] },
+            // 👇 双行排版优化
+            { id: 25, grade: 3, title: "第五课 间架结构的梳理与探究5<br><span style='font-size:0.9em;font-weight:normal'>——上下结构</span>", rule_desc: "备课中...", chars: [] },
+            { id: 26, grade: 3, title: "第六课 间架结构的梳理与探究6<br><span style='font-size:0.9em;font-weight:normal'>——上中下结构</span>", rule_desc: "备课中...", chars: [] },
+            { id: 27, grade: 3, title: "第七课 间架结构的梳理与探究7<br><span style='font-size:0.9em;font-weight:normal'>——两面包围</span>", rule_desc: "备课中...", chars: [] },
+            { id: 28, grade: 3, title: "第八课 间架结构的梳理与探究8<br><span style='font-size:0.9em;font-weight:normal'>——三面包围、全包围</span>", rule_desc: "备课中...", chars: [] }
         ];
 
         window.onload = function() { renderHome(); startCam('video-front', 'user'); };
@@ -580,7 +524,7 @@
             filteredCourses.forEach(function(course) { 
                 const div = document.createElement('div'); 
                 div.className = 'course-card'; 
-                // 传 course 对象本身，而不是索引，防止过滤后错乱
+                // 传 course 对象本身，而不是索引
                 div.onclick = function() { openLevel(course); }; 
                 div.innerHTML = "<div style='display:flex;align-items:center;'><div class='course-idx'>" + course.id + "</div><div class='course-info'><div class='course-title'>" + course.title + "</div><div class='course-desc'>🎯 " + course.rule_desc + "</div></div></div><div class='course-arrow'>➜</div>"; 
                 list.appendChild(div); 
@@ -589,7 +533,9 @@
 
         function openLevel(courseObj) { 
             currentActiveCourse = courseObj;
-            document.getElementById('level-title').innerText = courseObj.title; 
+            // 移除标题里的HTML标签，只显示纯文本标题（防止弹窗标题也换行）
+            document.getElementById('level-title').innerText = courseObj.title.replace(/<[^>]+>/g, ' '); 
+            
             const grid = document.getElementById('char-list'); 
             grid.innerHTML = ""; 
             
@@ -609,11 +555,8 @@
         
         function startApp(charIdx) { 
             currentActiveChar = currentActiveCourse.chars[charIdx]; 
-            
-            // 更新所有单字显示
             document.querySelectorAll('#study-char, #ghost-char, #adjust-char-overlay').forEach(function(el) { el.innerText = currentActiveChar.char; }); 
             
-            // ✨ 词语显示逻辑：如果有 word 属性，就显示，没有就隐藏
             var wordHint = document.getElementById('word-hint-display');
             var wordText = document.getElementById('word-text');
             if (currentActiveChar.word) {
@@ -767,17 +710,14 @@
             var verticalPieChars = ["胡", "讲", "开", "用", "月", "皮", "井"];
             var flatNaChars = ["之", "造", "远", "近", "还", "过"];
             var semiWrapChars = ["包", "饱", "抱"];
-            // 新增：左上包围（二年级）
             var leftUpperWrapChars = ["原", "店", "居", "房", "底"];
 
             var structType = "general";
 
-            // 逻辑更新：优先判断年级和特定ID
             if (currentActiveCourse.grade === 2 && currentActiveCourse.id === 11) {
                 structType = "leftUpperWrap"; 
             }
             else {
-                // 原有一年级逻辑
                 if (currentLessonIdNum === 6 && ["让", "广", "沙", "方"].includes(charKey)) structType = "dotRules";
                 else if (currentLessonIdNum === 7 && flatPieChars.includes(charKey)) structType = "flatPie";
                 else if (currentLessonIdNum === 7 && slantPieChars.includes(charKey)) structType = "slantPie";
@@ -821,4 +761,3 @@
     </script>
 </body>
 </html>
-

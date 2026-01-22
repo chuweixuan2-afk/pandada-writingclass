@@ -6,7 +6,7 @@
     <title>潘哒哒书法课</title>
     
     <style>
-        /* ================= 视觉系统 (v7.9 序号独立版) ================= */
+        /* ================= 视觉系统 (v8.1 重置版) ================= */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: #F5F1E8; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; height: 100vh; overflow: hidden; color: #3E2723; }
 
@@ -73,11 +73,8 @@
             width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; 
             background: #FFF8E1; padding-top: 40px; overflow-y: auto; padding-bottom: 120px; 
         }
-        .word-display { 
-            font-size: 20px; color: #E65100; font-weight: bold; margin-bottom: 10px; 
-            background: #FFE0B2; padding: 5px 15px; border-radius: 20px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: none; 
-        }
+        /* 🗑️ 已删除 word-display 样式 */
+
         .lesson-panda { position: absolute; top: -45px; right: 10px; width: 70px; transform: rotate(10deg); }
         .prep-tips { 
             width: 90%; margin-top: 25px; background: rgba(255, 255, 255, 0.6); 
@@ -246,7 +243,6 @@
         <div id="step-2" class="step-section" style="background:#FFF8E1;">
             <div class="nav-bar"><div class="nav-back" onclick="navigateTo('level-screen')">❮</div><div class="nav-title">跟着潘哒哒写</div></div>
             <div class="study-container">
-                <div class="word-display" id="word-hint-display">词语：<span id="word-text"></span></div>
                 <div class="video-box">
                     <video id="study-video" src="" controls loop playsinline preload="none"></video>
                     <img id="teaching-paw" src="images/panda_welcome.png">
@@ -414,13 +410,6 @@
                 "饱": ["加上了食字旁，右边的‘包’字<b>变窄了</b>，给左边留出了位置。", "左窄右宽，食字旁的撇画和右边的包配合默契，没有打架。", "右边的竖弯钩依然很舒展，把字托住了。"],
                 "抱": ["提手旁昂首挺胸，右边的‘包’字<b>字形收窄</b>，显得很精神。", "提手旁的提画有力，右边的竖弯钩依然保持了舒展，刚柔并济。", "左右两部分紧紧抱在一起，结构很紧凑。"],
 
-                // 二年级第一课
-                "原": [ "注意到了吗？厂字旁的<b>横画短且稍向上斜</b>，你写得很标准！", "里面的‘白’和‘小’写得稳稳当当，没有掉出来。", "<b>撇画写得很舒展</b>，包住了里面的部分，这就叫‘左包右放’！" ],
-                "店": [ "广字旁的<b>首点居中</b>，位置找得很准！", "里面的‘占’字没有缩在角落里，而是大胆地<b>向右伸展</b>了。", "横画写得不长，把位置让给了那一笔舒展的<b>长撇</b>。" ],
-                "底": [ "哇！这一笔<b>斜钩</b>写得太漂亮了，向右伸展，非常大气！", "左边的撇向左伸，右边的斜钩向右伸，这就叫<b>舒展大方</b>。", "下面的点画写得很有节奏，没有粘连。" ],
-                "房": [ "户字旁的第一点也是<b>居中</b>的，头正身直。", "注意到了吗？里面的‘方’没有写得太靠里，<b>向右探出</b>了一点点，结构很平衡。", "里面的部分和左边的长撇形成了<b>呼应</b>，配合得真好。" ],
-                "居": [ "尸字旁的<b>头小撇长</b>，你抓住了这个特征！", "里面的‘古’字写得方方正正，被上面的尸字头盖住了。", "长撇向左下伸展，给里面的字留出了舒服的空间。" ],
-
                 "default": ["笔画清晰，线条有力。", "结构完整，看起来很舒服。", "这一笔一划都写得很到位。", "整体工整，卷面很干净。"]
             },
             closings: [
@@ -435,7 +424,7 @@
         var currentActiveCourse = null;
         var startTime = 0; 
 
-        // 📦 课程数据库：包含 Grade 1, 2, 3
+        // 📦 课程数据库：Grade 1, 2, 3
         const COURSE_DATA = [
             // === 一年级内容 (Grade 1) ===
             { id: 1, grade: 1, title: "第一课 基本笔画练习", rule_desc: "短横、短竖", chars: [ { char: "春", pinyin: "chūn", video: "videos/春.mp4" }, { char: "青", pinyin: "qīng", video: "videos/青.mp4" }, { char: "当", pinyin: "dāng", video: "videos/当.mp4" }, { char: "共", pinyin: "gòng", video: "videos/共.mp4" }, { char: "元", pinyin: "yuán", video: "videos/元.mp4" }, { char: "止", pinyin: "zhǐ", video: "videos/止.mp4" }, { char: "他", pinyin: "tā", video: "videos/他.mp4" } ] },
@@ -443,7 +432,7 @@
             { id: 3, grade: 1, title: "第三课 基本笔画练习", rule_desc: "横折弯、横折折撇、横撇弯钩", chars: [ { char: "没", pinyin: "méi", video: "videos/没.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "队", pinyin: "duì", video: "videos/队.mp4" }, { char: "朵", pinyin: "duǒ", video: "videos/朵.mp4" }, { char: "运", pinyin: "yùn", video: "videos/运.mp4" } ] },
             { id: 4, grade: 1, title: "第四课 基本笔画练习", rule_desc: "横斜钩、横折提", chars: [ { char: "飞", pinyin: "fēi", video: "videos/飞.mp4" }, { char: "请", pinyin: "qǐng", video: "videos/请.mp4" }, { char: "证", pinyin: "zhèng", video: "videos/证.mp4" }, { char: "识", pinyin: "shí", video: "videos/识.mp4" }, { char: "气", pinyin: "qì", video: "videos/气.mp4" }, { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" } ] },
             { id: 5, grade: 1, title: "第五课 基本笔画练习", rule_desc: "左点、右点", chars: [ { char: "尖", pinyin: "jiān", video: "videos/尖.mp4" }, { char: "米", pinyin: "mǐ", video: "videos/米.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "为", pinyin: "wèi", video: "videos/为.mp4" }, { char: "外", pinyin: "wài", video: "videos/外.mp4" }, { char: "兴", pinyin: "xìng", video: "videos/兴.mp4" }, { char: "平", pinyin: "píng", video: "videos/平.mp4" } ] },
-            { id: 6, grade: 1, title: "第六课 笔顺规则掌握", rule_desc: "点的先写与后写", chars: [ { char: "沙", pinyin: "shā", video: "videos/沙.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "方", pinyin: "fāng", video: "videos/方.mp4" } ] },
+            { id: 6, grade: 1, title: "第六课 部件组合与笔顺", rule_desc: "点的位置与形态", chars: [ { char: "沙", pinyin: "shā", video: "videos/沙.mp4" }, { char: "让", pinyin: "ràng", video: "videos/让.mp4" }, { char: "广", pinyin: "guǎng", video: "videos/广.mp4" }, { char: "方", pinyin: "fāng", video: "videos/方.mp4" } ] },
             { id: 7, grade: 1, title: "第七课 基本笔画练习", rule_desc: "平撇、斜撇", chars: [ { char: "认", pinyin: "rèn", video: "videos/认.mp4" }, { char: "从", pinyin: "cóng", video: "videos/从.mp4" }, { char: "千", pinyin: "qiān", video: "videos/千.mp4" }, { char: "禾", pinyin: "hé", video: "videos/禾.mp4" } ] },
             { id: 8, grade: 1, title: "第八课 基本笔画练习", rule_desc: "竖撇", chars: [ { char: "胡", pinyin: "hú", video: "videos/胡.mp4" }, { char: "讲", pinyin: "jiǎng", video: "videos/讲.mp4" }, { char: "开", pinyin: "kāi", video: "videos/开.mp4" }, { char: "用", pinyin: "yòng", video: "videos/用.mp4" }, { char: "月", pinyin: "yuè", video: "videos/月.mp4" }, { char: "皮", pinyin: "pí", video: "videos/皮.mp4" }, { char: "井", pinyin: "jǐng", video: "videos/井.mp4" } ] },
             { id: 9, grade: 1, title: "第九课 基本笔画练习", rule_desc: "平捺", chars: [ { char: "之", pinyin: "zhī", video: "videos/之.mp4" }, { char: "造", pinyin: "zào", video: "videos/造.mp4" }, { char: "远", pinyin: "yuǎn", video: "videos/远.mp4" }, { char: "近", pinyin: "jìn", video: "videos/近.mp4" }, { char: "还", pinyin: "hái", video: "videos/还.mp4" }, { char: "过", pinyin: "guò", video: "videos/过.mp4" } ] },
@@ -455,30 +444,27 @@
                 title: "第一课 厂字旁、广字旁、尸字旁、户字旁", 
                 rule_desc: "重点：厂、广、尸、户", 
                 chars: [
-                    { char: "原", word: "原来", pinyin: "yuán", video: "videos/原.mp4" },
-                    { char: "店", word: "商店", pinyin: "diàn", video: "videos/店.mp4" },
-                    { char: "居", word: "居住", pinyin: "jū", video: "videos/居.mp4" },
-                    { char: "房", word: "楼房", pinyin: "fáng", video: "videos/房.mp4" },
-                    { char: "底", word: "到底", pinyin: "dǐ", video: "videos/底.mp4" }
+                    { char: "原", pinyin: "yuán", video: "videos/原.mp4" },
+                    { char: "愿", pinyin: "yuàn", video: "videos/愿.mp4" },
+                    { char: "底", pinyin: "dǐ", video: "videos/底.mp4" },
+                    { char: "店", pinyin: "diàn", video: "videos/店.mp4" },
+                    { char: "屎", pinyin: "shǐ", video: "videos/屎.mp4" },
+                    { char: "居", pinyin: "jū", video: "videos/居.mp4" },
+                    { char: "房", pinyin: "fáng", video: "videos/房.mp4" },
+                    { char: "扇", pinyin: "shàn", video: "videos/扇.mp4" }
                 ] 
             },
             { 
                 id: 12, grade: 2, 
                 title: "第二课 日字旁、目字旁、舌字旁、又字旁", 
                 rule_desc: "重点：日、目、舌、又", 
-                chars: [
-                    { char: "晴", word: "晴天", pinyin: "qíng", video: "videos/晴.mp4" },
-                    { char: "睛", word: "眼睛", pinyin: "jīng", video: "videos/睛.mp4" }
-                ] 
+                chars: [] // 🧹 已清空
             },
             { 
                 id: 13, grade: 2, 
                 title: "第三课 贝字旁、食字旁、鸟字旁、反文旁", 
                 rule_desc: "重点：贝、食、鸟、反文", 
-                chars: [
-                    { char: "败", word: "失败", pinyin: "bài", video: "videos/败.mp4" },
-                    { char: "饭", word: "吃饭", pinyin: "fàn", video: "videos/饭.mp4" }
-                ] 
+                chars: [] // 🧹 已清空
             },
             { id: 14, grade: 2, title: "第四课 国字框、门字框、同字框、三框", rule_desc: "备课中...", chars: [] },
             { id: 15, grade: 2, title: "第五课 心字底、四点底、皿字底、异字底", rule_desc: "备课中...", chars: [] },
@@ -524,7 +510,6 @@
             filteredCourses.forEach(function(course, idx) { 
                 const div = document.createElement('div'); 
                 div.className = 'course-card'; 
-                // 传 course 对象本身，而不是索引
                 div.onclick = function() { openLevel(course); }; 
                 // ✅ 序号修复：使用 idx + 1，确保每个年级都是从 1 开始
                 div.innerHTML = "<div style='display:flex;align-items:center;'><div class='course-idx'>" + (idx + 1) + "</div><div class='course-info'><div class='course-title'>" + course.title + "</div><div class='course-desc'>🎯 " + course.rule_desc + "</div></div></div><div class='course-arrow'>➜</div>"; 
@@ -534,7 +519,6 @@
 
         function openLevel(courseObj) { 
             currentActiveCourse = courseObj;
-            // 移除标题里的HTML标签，只显示纯文本标题（防止弹窗标题也换行）
             document.getElementById('level-title').innerText = courseObj.title.replace(/<[^>]+>/g, ' '); 
             
             const grid = document.getElementById('char-list'); 
@@ -558,14 +542,7 @@
             currentActiveChar = currentActiveCourse.chars[charIdx]; 
             document.querySelectorAll('#study-char, #ghost-char, #adjust-char-overlay').forEach(function(el) { el.innerText = currentActiveChar.char; }); 
             
-            var wordHint = document.getElementById('word-hint-display');
-            var wordText = document.getElementById('word-text');
-            if (currentActiveChar.word) {
-                wordText.innerText = currentActiveChar.word;
-                wordHint.style.display = 'block';
-            } else {
-                wordHint.style.display = 'none';
-            }
+            // 🧹 已移除词语展示逻辑 (word-hint-display)
 
             var v = document.getElementById('study-video');
             v.src = currentActiveChar.video; 
